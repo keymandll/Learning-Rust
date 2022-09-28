@@ -1,9 +1,3 @@
-// This example is 764 KB when compiled. That seems to be quite a lot.
-// Is the generated binary a standalone executable that does not depend
-// on shared object libraries? (I mean: it is a statically linked 
-// executable?) If it is, then the size of the executable is a lot less
-// concerning. 
-
 use std::io::{self, Write};
 use std::cmp::Ordering;
 use rand::Rng;
