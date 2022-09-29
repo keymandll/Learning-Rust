@@ -2,6 +2,11 @@
 
 use std::arch::asm;
 
+enum StringProperty {
+    LENGTH,
+    CAPACITY,
+}
+
 struct StringInfo {
     address: u64,
     data: u64,
@@ -44,34 +49,33 @@ fn get_string_data(string_address: u64) -> u64 {
     bytes
 }
 
-fn get_string_length(string_address: u64) -> u64 {
+fn get_string_property(string_address: u64, property: StringProperty) -> u64 {
     let value: u64;
+    let offset: u64 = match property {
+        StringProperty::LENGTH => { 8 },
+        StringProperty::CAPACITY => { 16 },
+    };
 
     unsafe {
         asm!(
             "mov x0, {string_addr}",
-            "add x0, x0, #8",
+            "mov x1, {offset}",
+            "add x0, x0, x1",
             "ldr {value}, [x0]",
             string_addr = in(reg) string_address,
+            offset = in(reg) offset,
             value = out(reg) value,
         );
     }
     value
 }
 
-fn get_string_capacity(string_address: u64) -> u64 {
-    let value: u64;
+fn get_string_length(string_address: u64) -> u64 {
+    get_string_property(string_address, StringProperty::LENGTH)
+}
 
-    unsafe {
-        asm!(
-            "mov x0, {string_addr}",
-            "add x0, x0, #16",
-            "ldr {value}, [x0]",
-            string_addr = in(reg) string_address,
-            value = out(reg) value,
-        );
-    }
-    value
+fn get_string_capacity(string_address: u64) -> u64 {
+    get_string_property(string_address, StringProperty::CAPACITY)
 }
 
 fn get_string_info(s: String) -> StringInfo {
