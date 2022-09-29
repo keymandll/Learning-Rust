@@ -1,7 +1,7 @@
 use std::arch::asm;
 
 fn main() {
-    let test_string = String::from("testing");
+    let test_string = String::from("💀test");
     let string_addr_out: u64;
     let data_at_addr: u64;
     let stack_pointer: u64;
