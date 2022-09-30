@@ -2,6 +2,9 @@
 
 use std::arch::asm;
 
+const STRING_PROPERTY_LENGTH: u64 = 8;
+const STRING_PROPERTY_CAPACITY: u64 = 16;
+
 enum StringProperty {
     LENGTH,
     CAPACITY,
